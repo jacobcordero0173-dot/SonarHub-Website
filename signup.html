@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | SonarHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --surface: #121212;
+            --purple: #a855f7;
+            --purple-glow: rgba(168, 85, 247, 0.35);
+            --purple-light: #c084fc;
+            --white: #ffffff;
+            --text: #e0e0e0;
+            --muted: #999;
+            --border: #2a2a2a;
+            --font-head: 'Impact', 'Arial Black', sans-serif;
+            --font-body: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Background glow */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .signup-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            background: var(--surface);
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 0 50px rgba(168, 85, 247, 0.1);
+        }
+
+        /* Logo & back link */
+        .top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .back-home {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .back-home:hover {
+            color: var(--purple-light);
+        }
+
+        .logo-small {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            text-shadow: 0 0 10px var(--purple);
+            text-decoration: none;
+        }
+        .logo-small span {
+            color: var(--purple-light);
+        }
+
+        /* Heading */
+        .signup-container h1 {
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: var(--white);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        /* Social buttons */
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid #333;
+            background: transparent;
+            color: var(--white);
+            transition: all 0.25s ease;
+            font-family: var(--font-body);
+        }
+
+        .social-btn:hover {
+            border-color: var(--purple);
+            background: rgba(168, 85, 247, 0.08);
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.15);
+        }
+
+        .social-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            color: #666;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #2a2a2a;
+        }
+
+        /* Form fields */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #bbb;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background: #1a1a1a;
+            color: var(--white);
+            font-size: 0.95rem;
+            font-family: var(--font-body);
+            transition: border-color 0.25s, box-shadow 0.25s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--purple);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: #555;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 6px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
+            background: var(--purple);
+            color: #000;
+            transition: all 0.3s ease;
+            margin-top: 4px;
+            font-family: var(--font-body);
+        }
+
+        .submit-btn:hover {
+            background: var(--purple-light);
+            box-shadow: 0 0 30px var(--purple-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Login link */
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .login-link a {
+            color: var(--purple-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .login-link a:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 28px 20px;
+                border-radius: 12px;
+            }
+            .signup-container h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="signup-container">
+        <!-- Top: back link + logo -->
+        <div class="top-row">
+            <a href="index.html" class="back-home">&#8592; Back</a>
+            <a href="index.html" class="logo-small">SONAR<span>HUB</span></a>
+        </div>
+
+        <!-- Heading -->
+        <h1>Create your account</h1>
+
+        <!-- Social sign-up buttons -->
+        <div class="social-buttons">
+            <button class="social-btn">
+                <!-- Google SVG icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Sign up with Google
+            </button>
+
+            <button class="social-btn">
+                <!-- GitHub SVG icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                Sign up with GitHub
+            </button>
+
+            <button class="social-btn">
+                <!-- Apple SVG icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                Sign up with Apple
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">Or</div>
+
+        <!-- Email / Password form -->
+        <form id="signupForm" onsubmit="handleSignUp(event)">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email address" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required minlength="6">
+            </div>
+            <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+
+        <!-- Login link -->
+        <p class="login-link">Already have a SonarHub account? <a href="#">Log in</a></p>
+    </div>
+
+    <script>
+        function handleSignUp(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Placeholder – replace with real authentication logic
+            console.log('Sign Up attempt:', { email, password });
+            alert('Sign Up successful! (demo)');
+
+            // Optionally redirect back to home
+            // window.location.href = 'index.html';
+        }
+
+        // Social buttons – demo handlers
+        document.querySelectorAll('.social-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const provider = this.textContent.trim();
+                alert(`Sign up with ${provider} (demo)`);
+            });
+        });
+    </script>
+</body>
+</html>
