@@ -90,20 +90,21 @@
 
     <script>
         // 🔁 REPLACE WITH YOUR REAL FIREBASE CONFIG
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAiA2GsMrApSozoEFuemjOdTD7sGXwW2ts",
+    authDomain: "sonarhub-285f3.firebaseapp.com",
+    projectId: "sonarhub-285f3",
+    storageBucket: "sonarhub-285f3.firebasestorage.app",
+    messagingSenderId: "892580357608",
+    appId: "1:892580357608:web:87a7fd438c0941643d705d",
+    measurementId: "G-TSS5J8K2P5"
+  };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
         // Google OAuth client ID (same as in signup.html)
-        const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+        const GOOGLE_CLIENT_ID = '875038248833-4emtqbs5ouvefcd95pph7fec0u4q6d8r.apps.googleusercontent.com';
 
         // ----- Google Login -----
         window.onload = function() {
