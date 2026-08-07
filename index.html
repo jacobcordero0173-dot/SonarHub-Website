@@ -618,69 +618,87 @@
     </footer>
 
     <script>
-        // ========== DYNAMIC AUTH BUTTON ==========
-        (function() {
-            const authBtn = document.getElementById('authButton');
-            const currentUser = localStorage.getItem('sonarhub_current_user');
-            if (currentUser) {
-                authBtn.textContent = 'Dashboard';
-                authBtn.href = 'dashboard.html';
-            } else {
-                authBtn.textContent = 'Sign Up';
-                authBtn.href = 'signup.html';
-            }
-        })();
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
-        // ========== MOBILE MENU & SCROLL ==========
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        const allNavLinks = document.querySelectorAll('#navLinks a');
-        const sections = document.querySelectorAll('section[id]');
+<script>
+    // 🔁 PASTE YOUR REAL FIREBASE CONFIG HERE
+  const firebaseConfig = {
+    apiKey: "AIzaSyAiA2GsMrApSozoEFuemjOdTD7sGXwW2ts",
+    authDomain: "sonarhub-285f3.firebaseapp.com",
+    projectId: "sonarhub-285f3",
+    storageBucket: "sonarhub-285f3.firebasestorage.app",
+    messagingSenderId: "892580357608",
+    appId: "1:892580357608:web:87a7fd438c0941643d705d",
+    measurementId: "G-TSS5J8K2P5"
+  };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('open');
-        });
-
-        allNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('open');
-            });
-        });
-
-        function setActiveLink() {
-            let current = 'home';
-            const scrollPos = window.scrollY + 100;
-            sections.forEach(section => {
-                const top = section.offsetTop;
-                const height = section.offsetHeight;
-                if (scrollPos >= top && scrollPos < top + height) {
-                    current = section.getAttribute('id');
-                }
-            });
-            allNavLinks.forEach(a => {
-                a.classList.remove('active');
-                if (a.getAttribute('data-section') === current) {
-                    a.classList.add('active');
-                }
-            });
+    // ========== DYNAMIC AUTH BUTTON (Firebase) ==========
+    const authBtn = document.getElementById('authButton');
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            authBtn.textContent = 'Dashboard';
+            authBtn.href = 'dashboard.html';
+        } else {
+            authBtn.textContent = 'Sign Up';
+            authBtn.href = 'signup.html';
         }
-        window.addEventListener('scroll', setActiveLink);
-        window.addEventListener('load', setActiveLink);
+    });
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const targetEl = document.querySelector(targetId);
-                if (targetEl) {
-                    e.preventDefault();
-                    const offset = document.querySelector('.navbar').offsetHeight + 10;
-                    window.scrollTo({ top: targetEl.offsetTop - offset, behavior: 'smooth' });
-                }
-            });
+    // ========== MOBILE MENU & SCROLL ==========
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    const allNavLinks = document.querySelectorAll('#navLinks a');
+    const sections = document.querySelectorAll('section[id]');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+
+    allNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('open');
         });
-    </script>
+    });
+
+    function setActiveLink() {
+        let current = 'home';
+        const scrollPos = window.scrollY + 100;
+        sections.forEach(section => {
+            const top = section.offsetTop;
+            const height = section.offsetHeight;
+            if (scrollPos >= top && scrollPos < top + height) {
+                current = section.getAttribute('id');
+            }
+        });
+        allNavLinks.forEach(a => {
+            a.classList.remove('active');
+            if (a.getAttribute('data-section') === current) {
+                a.classList.add('active');
+            }
+        });
+    }
+    window.addEventListener('scroll', setActiveLink);
+    window.addEventListener('load', setActiveLink);
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            const targetEl = document.querySelector(targetId);
+            if (targetEl) {
+                e.preventDefault();
+                const offset = document.querySelector('.navbar').offsetHeight + 10;
+                window.scrollTo({ top: targetEl.offsetTop - offset, behavior: 'smooth' });
+            }
+        });
+    });
+</script>
 </body>
 </html>
