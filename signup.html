@@ -103,6 +103,7 @@
             text-align: center;
         }
 
+        /* Social buttons */
         .social-buttons {
             display: flex;
             flex-direction: column;
@@ -241,6 +242,26 @@
             text-decoration: underline;
         }
 
+        /* Profile completion section */
+        #profileSection {
+            display: none;
+        }
+
+        #profileSection h2 {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .success-message {
+            text-align: center;
+            color: var(--purple-light);
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
         @media (max-width: 480px) {
             .signup-container {
                 padding: 28px 20px;
@@ -259,41 +280,61 @@
             <a href="index.html" class="logo-small">SONAR<span>HUB</span></a>
         </div>
 
-        <h1>Create your account</h1>
+        <!-- Initial sign-up view -->
+        <div id="initialView">
+            <h1>Create your account</h1>
 
-        <div class="social-buttons">
-            <div id="googleSignUp"></div>
+            <div class="social-buttons">
+                <div id="googleSignUp"></div>
 
-            <button class="social-btn" onclick="alert('GitHub sign-up (demo)')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
-                Sign up with GitHub
-            </button>
+                <button class="social-btn" onclick="alert('GitHub sign-up (demo)')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    Sign up with GitHub
+                </button>
 
-            <button class="social-btn" onclick="alert('Apple sign-up (demo)')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                </svg>
-                Sign up with Apple
-            </button>
+                <button class="social-btn" onclick="alert('Apple sign-up (demo)')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                    </svg>
+                    Sign up with Apple
+                </button>
+            </div>
+
+            <div class="divider">Or</div>
+
+            <form id="signupForm" onsubmit="handleEmailSignUp(event)">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required minlength="6">
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+
+            <p class="login-link">Already have a SonarHub account? <a href="#">Log in</a></p>
         </div>
 
-        <div class="divider">Or</div>
-
-        <form id="signupForm" onsubmit="handleEmailSignUp(event)">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter your email address" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter your password" required minlength="6">
-            </div>
-            <button type="submit" class="submit-btn">Sign Up</button>
-        </form>
-
-        <p class="login-link">Already have a SonarHub account? <a href="#">Log in</a></p>
+        <!-- Profile completion view (hidden until Google sign-in) -->
+        <div id="profileSection">
+            <h2>Complete your profile</h2>
+            <form id="profileForm" onsubmit="handleProfileSubmit(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Choose a username" required minlength="3">
+                </div>
+                <div class="form-group">
+                    <label for="displayName">Display Name</label>
+                    <input type="text" id="displayName" placeholder="How should we call you?" required>
+                </div>
+                <button type="submit" class="submit-btn">Create Account</button>
+            </form>
+            <div id="profileMessage" class="success-message"></div>
+        </div>
     </div>
 
     <!-- Google Identity Services Library -->
@@ -302,9 +343,11 @@
     <script>
         // ====================================================
         // 🔁 REPLACE THIS STRING WITH YOUR REAL GOOGLE CLIENT ID
-        // Example: '123456789-xxxxxxxxxx.apps.googleusercontent.com'
         // ====================================================
-        const GOOGLE_CLIENT_ID = '875038248833-4emtqbs5ouvefcd95pph7fec0u4q6d8r.apps.googleusercontent.com';
+        const GOOGLE_CLIENT_ID = 'YOUR_CLIENT_ID_HERE';
+
+        // Store Google user data temporarily
+        let googleUser = null;
 
         window.onload = function () {
             google.accounts.id.initialize({
@@ -329,17 +372,67 @@
         function handleGoogleResponse(response) {
             const idToken = response.credential;
             const payload = JSON.parse(atob(idToken.split('.')[1]));
-            console.log('User info:', payload);
-            alert(`Welcome, ${payload.name}! You are now signed up.`);
-            // You can redirect or store user info here
-            // window.location.href = 'dashboard.html';
+            console.log('Google user info:', payload);
+
+            // Save Google user data
+            googleUser = {
+                email: payload.email,
+                googleName: payload.name,
+                picture: payload.picture
+            };
+
+            // Check if this Google account already has a local account
+            const existingAccount = localStorage.getItem('sonarhub_user_' + googleUser.email);
+            if (existingAccount) {
+                // User already completed signup; just log them in
+                const userData = JSON.parse(existingAccount);
+                alert(`Welcome back, ${userData.displayName}!`);
+                // Optionally redirect
+                // window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Hide initial view, show profile completion
+            document.getElementById('initialView').style.display = 'none';
+            document.getElementById('profileSection').style.display = 'block';
+        }
+
+        function handleProfileSubmit(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const displayName = document.getElementById('displayName').value.trim();
+
+            if (!username || !displayName) return;
+
+            // Build full user object
+            const userAccount = {
+                email: googleUser.email,
+                googleName: googleUser.googleName,
+                picture: googleUser.picture,
+                username: username,
+                displayName: displayName,
+                createdAt: new Date().toISOString()
+            };
+
+            // Save to localStorage (simulate account creation)
+            localStorage.setItem('sonarhub_user_' + googleUser.email, JSON.stringify(userAccount));
+
+            // Show success
+            document.getElementById('profileForm').style.display = 'none';
+            const msg = document.getElementById('profileMessage');
+            msg.textContent = `Account created! Welcome, ${displayName}!`;
+            
+            // Optionally redirect after a moment
+            // setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         }
 
         function handleEmailSignUp(event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            alert(`Email sign-up with: ${email}`);
+            alert(`Email sign-up (demo): ${email}`);
+            // In real app you'd need username/display name as well
         }
     </script>
 </body>
