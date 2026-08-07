@@ -302,7 +302,8 @@
 
             <div class="divider">Or</div>
 
-            <form id="signupForm" onsubmit="handleEmailSignUp(event)">
+            <!-- Email/Password form (now fully functional) -->
+            <form id="emailSignupForm" onsubmit="handleEmailSignUp(event)">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" placeholder="Enter your email address" required>
@@ -317,7 +318,7 @@
             <p class="login-link">Already have a SonarHub account? <a href="#">Log in</a></p>
         </div>
 
-        <!-- Profile completion view (hidden until Google sign-in) -->
+        <!-- Profile completion view (hidden until email or Google sign-in) -->
         <div id="profileSection">
             <h2>Complete your profile</h2>
             <form id="profileForm" onsubmit="handleProfileSubmit(event)">
@@ -342,8 +343,10 @@
         // 🔁 REPLACE THIS WITH YOUR REAL GOOGLE CLIENT ID
         const GOOGLE_CLIENT_ID = '875038248833-4emtqbs5ouvefcd95pph7fec0u4q6d8r.apps.googleusercontent.com';
 
-        let googleUser = null;
+        // Temporary storage for partial user data before profile completion
+        let pendingUser = null;
 
+        // ----- Google Sign-Up (unchanged) -----
         window.onload = function () {
             google.accounts.id.initialize({
                 client_id: GOOGLE_CLIENT_ID,
@@ -367,64 +370,89 @@
         function handleGoogleResponse(response) {
             const idToken = response.credential;
             const payload = JSON.parse(atob(idToken.split('.')[1]));
-            console.log('Google user info:', payload);
 
-            googleUser = {
+            const googleUser = {
                 email: payload.email,
                 googleName: payload.name,
-                picture: payload.picture
+                picture: payload.picture,
+                signupMethod: 'google'
             };
 
-            // Check if user already has an account
-            const existingAccount = localStorage.getItem('sonarhub_user_' + googleUser.email);
-            if (existingAccount) {
-                // Already signed up – log in directly
-                localStorage.setItem('sonarhub_current_user', existingAccount);
+            // Check if already exists
+            if (localStorage.getItem('sonarhub_user_' + googleUser.email)) {
+                localStorage.setItem('sonarhub_current_user', localStorage.getItem('sonarhub_user_' + googleUser.email));
                 window.location.href = 'index.html';
                 return;
             }
 
-            // New user – show profile completion
+            // Store pending user and show profile completion
+            pendingUser = googleUser;
             document.getElementById('initialView').style.display = 'none';
             document.getElementById('profileSection').style.display = 'block';
         }
 
+        // ----- Email/Password Sign-Up (NEW functional code) -----
+        function handleEmailSignUp(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Check if account already exists
+            if (localStorage.getItem('sonarhub_user_' + email)) {
+                alert('An account with this email already exists. Please log in instead.');
+                return;
+            }
+
+            // Store email + password temporarily, then show profile completion
+            pendingUser = {
+                email: email,
+                password: password,  // (demo only – never store plain passwords in production)
+                signupMethod: 'email'
+            };
+
+            document.getElementById('initialView').style.display = 'none';
+            document.getElementById('profileSection').style.display = 'block';
+        }
+
+        // ----- Profile Completion (shared) -----
         function handleProfileSubmit(event) {
             event.preventDefault();
+
+            if (!pendingUser) {
+                alert('Something went wrong. Please start again.');
+                return;
+            }
 
             const username = document.getElementById('username').value.trim();
             const displayName = document.getElementById('displayName').value.trim();
 
             if (!username || !displayName) return;
 
+            // Build final user object
             const userAccount = {
-                email: googleUser.email,
-                googleName: googleUser.googleName,
-                picture: googleUser.picture,
+                email: pendingUser.email,
+                password: pendingUser.password || null,
+                googleName: pendingUser.googleName || null,
+                picture: pendingUser.picture || null,
                 username: username,
                 displayName: displayName,
+                signupMethod: pendingUser.signupMethod,
                 createdAt: new Date().toISOString()
             };
 
-            // Save account
-            localStorage.setItem('sonarhub_user_' + googleUser.email, JSON.stringify(userAccount));
+            // Save account to localStorage (simulate a database)
+            localStorage.setItem('sonarhub_user_' + userAccount.email, JSON.stringify(userAccount));
             // Set current session
             localStorage.setItem('sonarhub_current_user', JSON.stringify(userAccount));
 
-            // Show success & redirect after 2 seconds
+            // Show success & redirect
             document.getElementById('profileForm').style.display = 'none';
             const msg = document.getElementById('profileMessage');
             msg.textContent = `Account created! Welcome, ${displayName}! Redirecting...`;
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 2000);
-        }
-
-        function handleEmailSignUp(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            alert(`Email sign-up (demo): ${email}`);
         }
     </script>
 </body>
