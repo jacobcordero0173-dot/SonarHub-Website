@@ -33,7 +33,6 @@
             min-height: 100vh;
         }
 
-        /* ========== NAVIGATION ========== */
         .navbar {
             position: fixed;
             top: 0;
@@ -54,7 +53,6 @@
             align-items: center;
         }
 
-        /* Logo – far left */
         .logo {
             justify-self: start;
             display: flex;
@@ -94,7 +92,6 @@
             }
         }
 
-        /* Centered navigation links */
         .nav-links {
             display: flex;
             list-style: none;
@@ -135,7 +132,6 @@
             box-shadow: 0 0 12px var(--purple);
         }
 
-        /* Right section (Sign Up + Hamburger) */
         .nav-right {
             justify-self: end;
             display: flex;
@@ -143,7 +139,7 @@
             gap: 12px;
         }
 
-        .sign-up-btn {
+        .nav-action-btn {
             display: inline-block;
             padding: 8px 20px;
             font-weight: 700;
@@ -159,14 +155,13 @@
             white-space: nowrap;
         }
 
-        .sign-up-btn:hover {
+        .nav-action-btn:hover {
             background: var(--purple);
             color: #000;
             box-shadow: 0 0 20px var(--purple-glow);
             transform: translateY(-1px);
         }
 
-        /* Hamburger */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -230,13 +225,12 @@
                 font-size: 1.3rem;
             }
 
-            .sign-up-btn {
+            .nav-action-btn {
                 padding: 6px 14px;
                 font-size: 0.75rem;
             }
         }
 
-        /* ========== HERO ========== */
         .hero {
             margin-top: 72px;
             min-height: 80vh;
@@ -326,7 +320,6 @@
             text-shadow: 0 0 10px var(--purple);
         }
 
-        /* ========== SECTIONS ========== */
         .section {
             max-width: 1300px;
             margin: 0 auto;
@@ -407,7 +400,6 @@
             font-size: 0.9rem;
         }
 
-        /* ACCOUNTS cards */
         .accounts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -483,13 +475,11 @@
     <!-- ========== NAVIGATION ========== -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <!-- Logo – far left -->
             <a href="index.html" class="logo">
                 <div class="logo-icon">SH</div>
                 <span class="logo-text">SONAR<span style="color:var(--purple-light);">HUB</span></span>
             </a>
 
-            <!-- Centered tabs -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" class="active" data-section="home">HOME</a></li>
                 <li><a href="#cars" data-section="cars">CARS</a></li>
@@ -497,9 +487,9 @@
                 <li><a href="#accounts" data-section="accounts">ACCOUNTS</a></li>
             </ul>
 
-            <!-- Right section: Sign Up + Hamburger -->
             <div class="nav-right">
-                <a href="signup.html" class="sign-up-btn">Sign Up</a>
+                <!-- This button will be dynamically changed -->
+                <a href="signup.html" class="nav-action-btn" id="authButton">Sign Up</a>
                 <div class="hamburger" id="hamburger">
                     <span></span><span></span><span></span>
                 </div>
@@ -623,13 +613,25 @@
         </div>
     </section>
 
-    <!-- ========== FOOTER ========== -->
     <footer>
         <p>&copy; 2026 SONARHUB | The ultimate GTA modding experience &nbsp;|&nbsp; HOME &bull; CARS &bull; OUTFITS &bull; ACCOUNTS</p>
     </footer>
 
-    <!-- ========== SCRIPTS ========== -->
     <script>
+        // ========== DYNAMIC AUTH BUTTON ==========
+        (function() {
+            const authBtn = document.getElementById('authButton');
+            const currentUser = localStorage.getItem('sonarhub_current_user');
+            if (currentUser) {
+                authBtn.textContent = 'Dashboard';
+                authBtn.href = 'dashboard.html';
+            } else {
+                authBtn.textContent = 'Sign Up';
+                authBtn.href = 'signup.html';
+            }
+        })();
+
+        // ========== MOBILE MENU & SCROLL ==========
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
         const allNavLinks = document.querySelectorAll('#navLinks a');
