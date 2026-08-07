@@ -103,7 +103,6 @@
             text-align: center;
         }
 
-        /* Social buttons */
         .social-buttons {
             display: flex;
             flex-direction: column;
@@ -242,7 +241,6 @@
             text-decoration: underline;
         }
 
-        /* Profile completion section */
         #profileSection {
             display: none;
         }
@@ -341,12 +339,9 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
-        // ====================================================
-        // 🔁 REPLACE THIS STRING WITH YOUR REAL GOOGLE CLIENT ID
-        // ====================================================
+        // 🔁 REPLACE THIS WITH YOUR REAL GOOGLE CLIENT ID
         const GOOGLE_CLIENT_ID = '875038248833-4emtqbs5ouvefcd95pph7fec0u4q6d8r.apps.googleusercontent.com';
 
-        // Store Google user data temporarily
         let googleUser = null;
 
         window.onload = function () {
@@ -374,25 +369,22 @@
             const payload = JSON.parse(atob(idToken.split('.')[1]));
             console.log('Google user info:', payload);
 
-            // Save Google user data
             googleUser = {
                 email: payload.email,
                 googleName: payload.name,
                 picture: payload.picture
             };
 
-            // Check if this Google account already has a local account
+            // Check if user already has an account
             const existingAccount = localStorage.getItem('sonarhub_user_' + googleUser.email);
             if (existingAccount) {
-                // User already completed signup; just log them in
-                const userData = JSON.parse(existingAccount);
-                alert(`Welcome back, ${userData.displayName}!`);
-                // Optionally redirect
-                // window.location.href = 'dashboard.html';
+                // Already signed up – log in directly
+                localStorage.setItem('sonarhub_current_user', existingAccount);
+                window.location.href = 'index.html';
                 return;
             }
 
-            // Hide initial view, show profile completion
+            // New user – show profile completion
             document.getElementById('initialView').style.display = 'none';
             document.getElementById('profileSection').style.display = 'block';
         }
@@ -405,7 +397,6 @@
 
             if (!username || !displayName) return;
 
-            // Build full user object
             const userAccount = {
                 email: googleUser.email,
                 googleName: googleUser.googleName,
@@ -415,16 +406,18 @@
                 createdAt: new Date().toISOString()
             };
 
-            // Save to localStorage (simulate account creation)
+            // Save account
             localStorage.setItem('sonarhub_user_' + googleUser.email, JSON.stringify(userAccount));
+            // Set current session
+            localStorage.setItem('sonarhub_current_user', JSON.stringify(userAccount));
 
-            // Show success
+            // Show success & redirect after 2 seconds
             document.getElementById('profileForm').style.display = 'none';
             const msg = document.getElementById('profileMessage');
-            msg.textContent = `Account created! Welcome, ${displayName}!`;
-            
-            // Optionally redirect after a moment
-            // setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+            msg.textContent = `Account created! Welcome, ${displayName}! Redirecting...`;
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
         }
 
         function handleEmailSignUp(event) {
@@ -432,7 +425,6 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             alert(`Email sign-up (demo): ${email}`);
-            // In real app you'd need username/display name as well
         }
     </script>
 </body>
