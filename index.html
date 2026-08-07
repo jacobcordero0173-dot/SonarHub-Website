@@ -194,7 +194,6 @@
             transform: rotate(-45deg) translate(6px, -6px);
         }
 
-        /* Mobile navigation */
         @media (max-width: 768px) {
             .nav-container {
                 display: flex;
@@ -227,7 +226,7 @@
             }
 
             .logo-text {
-                display: inline; /* show text on mobile if space */
+                display: inline;
                 font-size: 1.3rem;
             }
 
@@ -484,9 +483,8 @@
     <!-- ========== NAVIGATION ========== -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <!-- Logo – far left (replace the icon with your own image) -->
-            <a href="#home" class="logo">
-                <!-- Replace the div below with <img src="your-logo.png" alt="SonarHub" width="42" height="42" style="border-radius:10px;"> -->
+            <!-- Logo – far left -->
+            <a href="index.html" class="logo">
                 <div class="logo-icon">SH</div>
                 <span class="logo-text">SONAR<span style="color:var(--purple-light);">HUB</span></span>
             </a>
@@ -501,7 +499,7 @@
 
             <!-- Right section: Sign Up + Hamburger -->
             <div class="nav-right">
-                <a href="#" class="sign-up-btn">Sign Up</a>
+                <a href="signup.html" class="sign-up-btn">Sign Up</a>
                 <div class="hamburger" id="hamburger">
                     <span></span><span></span><span></span>
                 </div>
@@ -637,13 +635,11 @@
         const allNavLinks = document.querySelectorAll('#navLinks a');
         const sections = document.querySelectorAll('section[id]');
 
-        // Mobile menu toggle
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navLinks.classList.toggle('open');
         });
 
-        // Close mobile menu on link click
         allNavLinks.forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
@@ -651,7 +647,6 @@
             });
         });
 
-        // Active link highlighting on scroll
         function setActiveLink() {
             let current = 'home';
             const scrollPos = window.scrollY + 100;
@@ -672,7 +667,6 @@
         window.addEventListener('scroll', setActiveLink);
         window.addEventListener('load', setActiveLink);
 
-        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const targetId = this.getAttribute('href');
