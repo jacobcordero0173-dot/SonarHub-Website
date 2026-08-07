@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SonarHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --surface: #121212;
+            --purple: #a855f7;
+            --purple-glow: rgba(168, 85, 247, 0.35);
+            --purple-light: #c084fc;
+            --white: #ffffff;
+            --text: #e0e0e0;
+            --muted: #999;
+            --border: #2a2a2a;
+            --font-head: 'Impact', 'Arial Black', sans-serif;
+            --font-body: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dashboard-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 500px;
+            background: var(--surface);
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 0 50px rgba(168, 85, 247, 0.1);
+            text-align: center;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            color: var(--white);
+            text-shadow: 0 0 12px var(--purple);
+            margin-bottom: 30px;
+        }
+        .logo span {
+            color: var(--purple-light);
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--purple);
+            margin: 0 auto 20px;
+            overflow: hidden;
+            box-shadow: 0 0 20px var(--purple-glow);
+        }
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            margin-bottom: 30px;
+        }
+        .user-info h2 {
+            font-family: var(--font-head);
+            font-size: 2rem;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+        .user-info p {
+            color: var(--muted);
+            margin: 5px 0;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: transparent;
+            border: 2px solid var(--purple);
+            color: var(--white);
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: var(--purple);
+            color: #000;
+            box-shadow: 0 0 25px var(--purple-glow);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: var(--purple-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="logo">SONAR<span>HUB</span></div>
+
+        <div id="userProfile">
+            <div class="profile-pic" id="profilePic">
+                <img id="userImage" src="" alt="Profile" style="display:none;">
+            </div>
+            <div class="user-info">
+                <h2 id="displayName"></h2>
+                <p id="username"></p>
+                <p id="email"></p>
+            </div>
+            <a href="#" class="logout-btn" id="logoutBtn">Log Out</a>
+        </div>
+
+        <div id="notLoggedIn" style="display:none;">
+            <p style="color:var(--muted); margin-bottom:20px;">You are not logged in.</p>
+            <a href="signup.html" class="logout-btn">Sign Up</a>
+        </div>
+
+        <a href="index.html" class="back-link">&#8592; Back to Home</a>
+    </div>
+
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('sonarhub_current_user'));
+
+        if (currentUser) {
+            document.getElementById('displayName').textContent = currentUser.displayName;
+            document.getElementById('username').textContent = '@' + currentUser.username;
+            document.getElementById('email').textContent = currentUser.email;
+
+            if (currentUser.picture) {
+                const img = document.getElementById('userImage');
+                img.src = currentUser.picture;
+                img.style.display = 'block';
+            }
+        } else {
+            document.getElementById('userProfile').style.display = 'none';
+            document.getElementById('notLoggedIn').style.display = 'block';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('sonarhub_current_user');
+            alert('You have been logged out.');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
