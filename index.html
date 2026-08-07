@@ -135,9 +135,39 @@
             box-shadow: 0 0 12px var(--purple);
         }
 
-        /* Hamburger – far right (third column) */
-        .hamburger {
+        /* Right section (Sign Up + Hamburger) */
+        .nav-right {
             justify-self: end;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sign-up-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--white);
+            background: transparent;
+            border: 2px solid var(--purple);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sign-up-btn:hover {
+            background: var(--purple);
+            color: #000;
+            box-shadow: 0 0 20px var(--purple-glow);
+            transform: translateY(-1px);
+        }
+
+        /* Hamburger */
+        .hamburger {
             display: none;
             flex-direction: column;
             gap: 6px;
@@ -199,6 +229,11 @@
             .logo-text {
                 display: inline; /* show text on mobile if space */
                 font-size: 1.3rem;
+            }
+
+            .sign-up-btn {
+                padding: 6px 14px;
+                font-size: 0.75rem;
             }
         }
 
@@ -464,9 +499,12 @@
                 <li><a href="#accounts" data-section="accounts">ACCOUNTS</a></li>
             </ul>
 
-            <!-- Hamburger (right side on mobile) -->
-            <div class="hamburger" id="hamburger">
-                <span></span><span></span><span></span>
+            <!-- Right section: Sign Up + Hamburger -->
+            <div class="nav-right">
+                <a href="#" class="sign-up-btn">Sign Up</a>
+                <div class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
+                </div>
             </div>
         </div>
     </nav>
