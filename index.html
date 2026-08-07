@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SonarHub | GTA Modding Server</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0c0c0c;
+            --surface: #141414;
+            --neon: #00f0ff;
+            --neon-glow: rgba(0, 240, 255, 0.25);
+            --gold: #f5c542;
+            --text: #e0e0e0;
+            --muted: #888;
+            --border: #2a2a2a;
+            --font-head: 'Impact', 'Arial Black', sans-serif;
+            --font-body: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #222;
+            transition: all 0.3s;
+        }
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            height: 70px;
+        }
+        .logo {
+            font-family: var(--font-head);
+            font-size: 2rem;
+            letter-spacing: 3px;
+            color: #fff;
+            text-decoration: none;
+            text-shadow: 0 0 12px var(--neon);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            color: var(--neon);
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #aaa;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 10px 18px;
+            border-radius: 4px;
+            transition: 0.25s;
+            font-size: 0.9rem;
+            position: relative;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(0, 240, 255, 0.08);
+            text-shadow: 0 0 8px var(--neon);
+        }
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 18px;
+            right: 18px;
+            height: 2px;
+            background: var(--neon);
+            box-shadow: 0 0 10px var(--neon);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .hamburger span {
+            width: 26px;
+            height: 3px;
+            background: #fff;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 270px;
+                height: 100vh;
+                background: #0f0f0f;
+                flex-direction: column;
+                justify-content: center;
+                gap: 25px;
+                transition: right 0.4s;
+                border-left: 1px solid #222;
+                padding: 40px 30px;
+            }
+            .nav-links.open { right: 0; }
+            .hamburger { display: flex; }
+        }
+
+        /* HERO */
+        .hero {
+            margin-top: 70px;
+            min-height: 80vh;
+            background: radial-gradient(circle at 30% 40%, #1a1a2e 0%, #0a0a0a 90%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+        }
+        .hero-content h1 {
+            font-family: var(--font-head);
+            font-size: 4rem;
+            letter-spacing: 5px;
+            color: #fff;
+            text-shadow: 0 0 25px var(--neon);
+            margin-bottom: 15px;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #bbb;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn {
+            padding: 14px 32px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: 0.3s;
+            border: 2px solid transparent;
+            font-size: 0.85rem;
+        }
+        .btn-neon {
+            background: var(--neon);
+            color: #000;
+            border-color: var(--neon);
+            box-shadow: 0 0 20px var(--neon-glow);
+        }
+        .btn-neon:hover {
+            background: #33f5ff;
+            box-shadow: 0 0 35px var(--neon);
+            transform: translateY(-3px);
+        }
+        .btn-outline {
+            border-color: #555;
+            color: #fff;
+        }
+        .btn-outline:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+            text-shadow: 0 0 10px var(--neon);
+        }
+
+        /* SECTIONS */
+        .section {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+        .section-tag {
+            color: var(--neon);
+            font-weight: 700;
+            letter-spacing: 4px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-family: var(--font-head);
+            font-size: 2.6rem;
+            letter-spacing: 2px;
+            color: #fff;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px rgba(0,240,255,0.4);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid #222;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.35s;
+            cursor: pointer;
+        }
+        .card:hover {
+            border-color: var(--neon);
+            box-shadow: 0 0 30px rgba(0,240,255,0.15);
+            transform: translateY(-8px);
+        }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            background: #1a1a1a;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--neon);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .card-body h3 {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+        .card-body p {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* ACCOUNTS special card */
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .tier-card {
+            background: var(--surface);
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .tier-card.featured {
+            border-color: var(--neon);
+            box-shadow: 0 0 35px rgba(0,240,255,0.25);
+        }
+        .tier-card h3 {
+            font-family: var(--font-head);
+            font-size: 2rem;
+            color: var(--neon);
+            margin-bottom: 10px;
+        }
+        .tier-card ul {
+            list-style: none;
+            color: #ccc;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            line-height: 2;
+        }
+        .btn-small {
+            display: inline-block;
+            padding: 10px 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 3px;
+            text-decoration: none;
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid #222;
+            color: #666;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 600px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .section-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">SONAR<span>HUB</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active" data-section="home">HOME</a></li>
+                <li><a href="#cars" data-section="cars">CARS</a></li>
+                <li><a href="#outfits" data-section="outfits">OUTFITS</a></li>
+                <li><a href="#accounts" data-section="accounts">ACCOUNTS</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO / HOME ========== -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>WELCOME TO SONARHUB</h1>
+            <p>The ultimate GTA modding server — exclusive cars, custom outfits, and premium accounts.</p>
+            <div class="btn-group">
+                <a href="#cars" class="btn btn-neon">BROWSE CARS</a>
+                <a href="#outfits" class="btn btn-outline">VIEW OUTFITS</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CARS SECTION ========== -->
+    <section id="cars" class="section">
+        <p class="section-tag">// Modded Vehicles</p>
+        <h2 class="section-title">CARS</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=350&fit=crop" alt="GTA style sports car" loading="lazy">
+                <div class="card-body">
+                    <span class="card-badge">Exclusive</span>
+                    <h3>Benefactor Schafter V12</h3>
+                    <p>Fully modded with custom engine sound, neon underglow & bulletproof tires.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&h=350&fit=crop" alt="Muscle car" loading="lazy">
+                <div class="card-body">
+                    <span class="card-badge">Limited</span>
+                    <h3>Declasse Vigero ZX</h3>
+                    <p>Widebody kit, 1000+ HP tuning, unique livery — available only on SonarHub.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&h=350&fit=crop" alt="Red supercar" loading="lazy">
+                <div class="card-body">
+                    <span class="card-badge">New Drop</span>
+                    <h3>Pegassi Zentorno</h3>
+                    <p>Active aero, custom interior, and a screaming V12 — rule the streets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== OUTFITS SECTION ========== -->
+    <section id="outfits" class="section">
+        <p class="section-tag">// Character Style</p>
+        <h2 class="section-title">OUTFITS</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1603252109303-2751441dd157?w=600&h=350&fit=crop" alt="Streetwear outfit" loading="lazy">
+                <div class="card-body">
+                    <span class="card-badge">Street</span>
+                    <h3>Los Santos Hustler</h3>
+                    <p>Baggy jeans,限量 sneakers, gold chains — the ultimate gangster vibe.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=600&h=350&fit=crop" alt="Formal suit" loading="lazy">
+                <div class="card-body">
+                    <span class="card-badge">Formal</span>
+                    <h3>The CEO Look</h3>
+                    <p>Custom tailored suits, ties, and leather gloves for that executive presence.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600&h=350&fit=crop" alt="Tactical gear" loading="lazy">
+                <div class="card-body">
+                    <span class="card-badge">Tactical</span>
+                    <h3>NOOSE Operator</h3>
+                    <p>Heavy armor, helmets, and tactical vests — dominate heists in style.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ACCOUNTS SECTION ========== -->
+    <section id="accounts" class="section">
+        <p class="section-tag">// Membership</p>
+        <h2 class="section-title">ACCOUNTS</h2>
+        <div class="accounts-grid">
+            <div class="tier-card">
+                <h3>FREE</h3>
+                <ul>
+                    <li>Access to basic cars</li>
+                    <li>Standard outfits</li>
+                    <li>Join public sessions</li>
+                    <li>Discord role</li>
+                </ul>
+                <a href="#" class="btn-small btn-outline" style="color:#fff; border-color:#555;">PLAY NOW</a>
+            </div>
+            <div class="tier-card featured">
+                <h3>VIP</h3>
+                <ul>
+                    <li>All exclusive cars</li>
+                    <li>Custom outfit editor</li>
+                    <li>Priority queue</li>
+                    <li>Monthly in-game cash</li>
+                    <li>Private garage</li>
+                </ul>
+                <a href="#" class="btn-small btn-neon" style="color:#000;">UPGRADE</a>
+            </div>
+            <div class="tier-card">
+                <h3>ADMIN</h3>
+                <ul>
+                    <li>Full server access</li>
+                    <li>Moderation tools</li>
+                    <li>Spawn any vehicle</li>
+                    <li>Create custom events</li>
+                    <li>Staff only chat</li>
+                </ul>
+                <a href="#" class="btn-small btn-outline" style="color:#fff; border-color:#555;">APPLY</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <p>&copy; 2026 SONARHUB | The ultimate GTA modding experience &nbsp;|&nbsp; HOME &bull; CARS &bull; OUTFITS &bull; ACCOUNTS</p>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        const allNavLinks = document.querySelectorAll('#navLinks a');
+        const sections = document.querySelectorAll('section[id]');
+
+        // Mobile menu toggle
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+
+        // Close mobile menu on link click
+        allNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // Active link highlighting on scroll
+        function setActiveLink() {
+            let current = 'home';
+            const scrollPos = window.scrollY + 100;
+            sections.forEach(section => {
+                const top = section.offsetTop;
+                const height = section.offsetHeight;
+                if (scrollPos >= top && scrollPos < top + height) {
+                    current = section.getAttribute('id');
+                }
+            });
+            allNavLinks.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('data-section') === current) {
+                    a.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', setActiveLink);
+        window.addEventListener('load', setActiveLink);
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const targetEl = document.querySelector(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    const offset = document.querySelector('.navbar').offsetHeight + 10;
+                    window.scrollTo({ top: targetEl.offsetTop - offset, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
