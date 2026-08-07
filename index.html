@@ -12,13 +12,14 @@
         }
 
         :root {
-            --bg: #0c0c0c;
-            --surface: #141414;
-            --neon: #00f0ff;
-            --neon-glow: rgba(0, 240, 255, 0.25);
-            --gold: #f5c542;
+            --bg: #0a0a0a;
+            --surface: #121212;
+            --purple: #a855f7;
+            --purple-glow: rgba(168, 85, 247, 0.35);
+            --purple-light: #c084fc;
+            --white: #ffffff;
             --text: #e0e0e0;
-            --muted: #888;
+            --muted: #999;
             --border: #2a2a2a;
             --font-head: 'Impact', 'Arial Black', sans-serif;
             --font-body: 'Segoe UI', system-ui, sans-serif;
@@ -32,46 +33,76 @@
             min-height: 100vh;
         }
 
-        /* NAVBAR */
+        /* ========== NAVIGATION ========== */
         .navbar {
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(10, 10, 10, 0.92);
+            background: rgba(10, 10, 10, 0.94);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid #222;
-            transition: all 0.3s;
+            border-bottom: 1px solid #1f1f1f;
         }
+
         .nav-container {
             max-width: 1300px;
             margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             padding: 0 25px;
-            height: 70px;
+            height: 72px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
         }
+
+        /* Logo – far left */
         .logo {
-            font-family: var(--font-head);
-            font-size: 2rem;
-            letter-spacing: 3px;
-            color: #fff;
-            text-decoration: none;
-            text-shadow: 0 0 12px var(--neon);
+            justify-self: start;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            text-decoration: none;
         }
-        .logo span {
-            color: var(--neon);
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--purple), #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 1.2rem;
+            font-family: var(--font-head);
+            letter-spacing: 1px;
+            box-shadow: 0 0 18px var(--purple-glow);
         }
+
+        .logo-text {
+            font-family: var(--font-head);
+            font-size: 1.7rem;
+            letter-spacing: 3px;
+            color: var(--white);
+            text-shadow: 0 0 14px var(--purple);
+            display: none;
+        }
+
+        @media (min-width: 600px) {
+            .logo-text {
+                display: inline;
+            }
+        }
+
+        /* Centered navigation links */
         .nav-links {
             display: flex;
             list-style: none;
             gap: 5px;
             align-items: center;
+            justify-self: center;
         }
+
         .nav-links a {
             text-decoration: none;
             color: #aaa;
@@ -83,13 +114,16 @@
             transition: 0.25s;
             font-size: 0.9rem;
             position: relative;
+            white-space: nowrap;
         }
+
         .nav-links a:hover,
         .nav-links a.active {
-            color: #fff;
-            background: rgba(0, 240, 255, 0.08);
-            text-shadow: 0 0 8px var(--neon);
+            color: var(--white);
+            background: rgba(168, 85, 247, 0.12);
+            text-shadow: 0 0 10px var(--purple);
         }
+
         .nav-links a.active::after {
             content: '';
             position: absolute;
@@ -97,17 +131,21 @@
             left: 18px;
             right: 18px;
             height: 2px;
-            background: var(--neon);
-            box-shadow: 0 0 10px var(--neon);
+            background: var(--purple);
+            box-shadow: 0 0 12px var(--purple);
         }
 
+        /* Hamburger – far right (third column) */
         .hamburger {
+            justify-self: end;
             display: none;
             flex-direction: column;
             gap: 6px;
             cursor: pointer;
             padding: 8px;
+            z-index: 1001;
         }
+
         .hamburger span {
             width: 26px;
             height: 3px;
@@ -115,11 +153,25 @@
             border-radius: 2px;
             transition: 0.3s;
         }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile navigation */
         @media (max-width: 768px) {
+            .nav-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
             .nav-links {
                 position: fixed;
                 top: 0;
@@ -129,20 +181,32 @@
                 background: #0f0f0f;
                 flex-direction: column;
                 justify-content: center;
-                gap: 25px;
+                gap: 24px;
                 transition: right 0.4s;
                 border-left: 1px solid #222;
                 padding: 40px 30px;
+                z-index: 1000;
             }
-            .nav-links.open { right: 0; }
-            .hamburger { display: flex; }
+
+            .nav-links.open {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .logo-text {
+                display: inline; /* show text on mobile if space */
+                font-size: 1.3rem;
+            }
         }
 
-        /* HERO */
+        /* ========== HERO ========== */
         .hero {
-            margin-top: 70px;
+            margin-top: 72px;
             min-height: 80vh;
-            background: radial-gradient(circle at 30% 40%, #1a1a2e 0%, #0a0a0a 90%);
+            background: radial-gradient(circle at 30% 40%, #1a1025 0%, #0a0a0a 90%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -151,100 +215,114 @@
             position: relative;
             overflow: hidden;
         }
+
         .hero::before {
             content: '';
             position: absolute;
-            top: -50%;
+            top: -40%;
             left: -20%;
             width: 800px;
             height: 800px;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.09) 0%, transparent 70%);
             pointer-events: none;
         }
+
         .hero-content {
             position: relative;
             z-index: 2;
             max-width: 700px;
         }
+
         .hero-content h1 {
             font-family: var(--font-head);
-            font-size: 4rem;
-            letter-spacing: 5px;
-            color: #fff;
-            text-shadow: 0 0 25px var(--neon);
+            font-size: 3.8rem;
+            letter-spacing: 4px;
+            color: var(--white);
+            text-shadow: 0 0 30px var(--purple);
             margin-bottom: 15px;
         }
+
         .hero-content p {
             font-size: 1.2rem;
-            color: #bbb;
+            color: #ccc;
             margin-bottom: 30px;
             letter-spacing: 1px;
         }
+
         .btn-group {
             display: flex;
-            gap: 15px;
+            gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .btn {
             padding: 14px 32px;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
             text-decoration: none;
-            border-radius: 3px;
+            border-radius: 4px;
             transition: 0.3s;
             border: 2px solid transparent;
             font-size: 0.85rem;
         }
-        .btn-neon {
-            background: var(--neon);
+
+        .btn-purple {
+            background: var(--purple);
             color: #000;
-            border-color: var(--neon);
-            box-shadow: 0 0 20px var(--neon-glow);
-        }
-        .btn-neon:hover {
-            background: #33f5ff;
-            box-shadow: 0 0 35px var(--neon);
-            transform: translateY(-3px);
-        }
-        .btn-outline {
-            border-color: #555;
-            color: #fff;
-        }
-        .btn-outline:hover {
-            border-color: var(--neon);
-            color: var(--neon);
-            text-shadow: 0 0 10px var(--neon);
+            border-color: var(--purple);
+            box-shadow: 0 0 20px var(--purple-glow);
         }
 
-        /* SECTIONS */
+        .btn-purple:hover {
+            background: var(--purple-light);
+            box-shadow: 0 0 35px var(--purple);
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            border-color: #444;
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--purple);
+            color: var(--purple-light);
+            text-shadow: 0 0 10px var(--purple);
+        }
+
+        /* ========== SECTIONS ========== */
         .section {
             max-width: 1300px;
             margin: 0 auto;
             padding: 80px 20px;
         }
+
         .section-tag {
-            color: var(--neon);
+            color: var(--purple-light);
             font-weight: 700;
             letter-spacing: 4px;
             font-size: 0.75rem;
             text-transform: uppercase;
             margin-bottom: 8px;
         }
+
         .section-title {
             font-family: var(--font-head);
             font-size: 2.6rem;
             letter-spacing: 2px;
-            color: #fff;
+            color: var(--white);
             margin-bottom: 40px;
-            text-shadow: 0 0 15px rgba(0,240,255,0.4);
+            text-shadow: 0 0 18px rgba(168, 85, 247, 0.4);
         }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
         }
+
         .card {
             background: var(--surface);
             border: 1px solid #222;
@@ -253,11 +331,13 @@
             transition: all 0.35s;
             cursor: pointer;
         }
+
         .card:hover {
-            border-color: var(--neon);
-            box-shadow: 0 0 30px rgba(0,240,255,0.15);
+            border-color: var(--purple);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.25);
             transform: translateY(-8px);
         }
+
         .card img {
             width: 100%;
             height: 200px;
@@ -265,18 +345,21 @@
             display: block;
             background: #1a1a1a;
         }
+
         .card-body {
             padding: 20px;
         }
+
         .card-badge {
             display: inline-block;
             font-size: 0.7rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--neon);
+            color: var(--purple-light);
             font-weight: 700;
             margin-bottom: 8px;
         }
+
         .card-body h3 {
             font-family: var(--font-head);
             font-size: 1.3rem;
@@ -284,17 +367,19 @@
             margin-bottom: 6px;
             letter-spacing: 1px;
         }
+
         .card-body p {
             color: #999;
             font-size: 0.9rem;
         }
 
-        /* ACCOUNTS special card */
+        /* ACCOUNTS cards */
         .accounts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
         }
+
         .tier-card {
             background: var(--surface);
             border: 1px solid #222;
@@ -303,16 +388,19 @@
             text-align: center;
             transition: 0.3s;
         }
+
         .tier-card.featured {
-            border-color: var(--neon);
-            box-shadow: 0 0 35px rgba(0,240,255,0.25);
+            border-color: var(--purple);
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.25);
         }
+
         .tier-card h3 {
             font-family: var(--font-head);
             font-size: 2rem;
-            color: var(--neon);
+            color: var(--purple-light);
             margin-bottom: 10px;
         }
+
         .tier-card ul {
             list-style: none;
             color: #ccc;
@@ -320,6 +408,7 @@
             font-size: 0.9rem;
             line-height: 2;
         }
+
         .btn-small {
             display: inline-block;
             padding: 10px 28px;
@@ -330,6 +419,11 @@
             text-decoration: none;
             transition: 0.3s;
             border: 2px solid transparent;
+            color: #fff;
+        }
+
+        .btn-small.btn-purple {
+            color: #000;
         }
 
         footer {
@@ -342,8 +436,12 @@
         }
 
         @media (max-width: 600px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            .section-title { font-size: 1.8rem; }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -351,13 +449,22 @@
     <!-- ========== NAVIGATION ========== -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#home" class="logo">SONAR<span>HUB</span></a>
+            <!-- Logo – far left (replace the icon with your own image) -->
+            <a href="#home" class="logo">
+                <!-- Replace the div below with <img src="your-logo.png" alt="SonarHub" width="42" height="42" style="border-radius:10px;"> -->
+                <div class="logo-icon">SH</div>
+                <span class="logo-text">SONAR<span style="color:var(--purple-light);">HUB</span></span>
+            </a>
+
+            <!-- Centered tabs -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" class="active" data-section="home">HOME</a></li>
                 <li><a href="#cars" data-section="cars">CARS</a></li>
                 <li><a href="#outfits" data-section="outfits">OUTFITS</a></li>
                 <li><a href="#accounts" data-section="accounts">ACCOUNTS</a></li>
             </ul>
+
+            <!-- Hamburger (right side on mobile) -->
             <div class="hamburger" id="hamburger">
                 <span></span><span></span><span></span>
             </div>
@@ -370,7 +477,7 @@
             <h1>WELCOME TO SONARHUB</h1>
             <p>The ultimate GTA modding server — exclusive cars, custom outfits, and premium accounts.</p>
             <div class="btn-group">
-                <a href="#cars" class="btn btn-neon">BROWSE CARS</a>
+                <a href="#cars" class="btn btn-purple">BROWSE CARS</a>
                 <a href="#outfits" class="btn btn-outline">VIEW OUTFITS</a>
             </div>
         </div>
@@ -453,7 +560,7 @@
                     <li>Join public sessions</li>
                     <li>Discord role</li>
                 </ul>
-                <a href="#" class="btn-small btn-outline" style="color:#fff; border-color:#555;">PLAY NOW</a>
+                <a href="#" class="btn-small btn-outline" style="border-color:#555;">PLAY NOW</a>
             </div>
             <div class="tier-card featured">
                 <h3>VIP</h3>
@@ -464,7 +571,7 @@
                     <li>Monthly in-game cash</li>
                     <li>Private garage</li>
                 </ul>
-                <a href="#" class="btn-small btn-neon" style="color:#000;">UPGRADE</a>
+                <a href="#" class="btn-small btn-purple">UPGRADE</a>
             </div>
             <div class="tier-card">
                 <h3>ADMIN</h3>
@@ -475,7 +582,7 @@
                     <li>Create custom events</li>
                     <li>Staff only chat</li>
                 </ul>
-                <a href="#" class="btn-small btn-outline" style="color:#fff; border-color:#555;">APPLY</a>
+                <a href="#" class="btn-small btn-outline" style="border-color:#555;">APPLY</a>
             </div>
         </div>
     </section>
